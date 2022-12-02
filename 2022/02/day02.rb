@@ -20,10 +20,11 @@ class RPS
 
   def initialize(file)
     f = File.open(file).readlines
-    @input = f.each { |line| line.gsub!(/[XYZ]/, 'X' => 'A', 'Y' => 'B', 'Z' => 'C') }
+    # @input = f.each { |line| line.gsub!(/[XYZ]/, 'X' => 'A', 'Y' => 'B', 'Z' => 'C') }
+    @input = f
   end
 
-  def play
+  def part_one
     total_score = 0
     @input.each do |round|
       elf = round.split[0]
@@ -31,14 +32,30 @@ class RPS
       total_score += if elf == player
                        SCORE[player] + 3
                      elsif elf == RULES[player][0]
-                       SCORE[player]
-                     else
                        SCORE[player] + 6
+                     else
+                       SCORE[player]
+                     end
+    end
+    total_score
+  end
+
+  def part_two
+    total_score = 0
+    @input.each do |round|
+      elf = round.split[0]
+      player = round.split[1]
+      total_score += if player == 'X'
+                       SCORE[RULES[elf][0]]
+                     elsif player == 'Y'
+                       SCORE[elf] + 3
+                     else
+                       SCORE[RULES[elf][1]] + 6
                      end
     end
     total_score
   end
 end
 
-game = RPS.new('test_input.txt')
-p game.play
+game = RPS.new('input-2.txt')
+p game.part_two

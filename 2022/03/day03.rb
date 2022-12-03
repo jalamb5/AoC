@@ -4,9 +4,6 @@
 class Rucksacks
   attr_reader :input
 
-  UPPER = ('A'..'Z').freeze
-  LOWER = ('a'..'z').freeze
-
   def initialize(input)
     @input = File.open(input).readlines
   end
@@ -17,7 +14,7 @@ class Rucksacks
       value = common_value(split_compartments(rucksack))
       total_score += score(value[0])
     end
-    p total_score
+    puts "Part One: #{total_score}"
   end
 
   def part_two
@@ -26,7 +23,7 @@ class Rucksacks
       common = group[0].split('') & group[1].split('') & group[2].split('')
       total_score += score(common[0])
     end
-    p total_score
+    puts "Part Two: #{total_score}"
   end
 
   private
@@ -43,7 +40,7 @@ class Rucksacks
 
   # Convert common value to score
   def score(value)
-    if UPPER.include?(value)
+    if ('A'..'Z').include?(value)
       value.ord - 38
     else
       value.ord - 96

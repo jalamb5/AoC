@@ -17,6 +17,15 @@ class CleanUp
     puts "Part One: #{full_overlaps}"
   end
 
+  def part_two
+    any_overlaps = 0
+    @input.each do |line|
+      ranges = range_creator(line)
+      any_overlaps += 1 if partially_overlaps?(ranges[0], ranges[1])
+    end
+    puts "Part Two: #{any_overlaps}"
+  end
+
   private
 
   # Receive a string of ranges, convert to Ruby range objects
@@ -35,10 +44,14 @@ class CleanUp
     range_one.include?(range_two.begin) && range_one.include?(range_two.end) ||
       range_two.include?(range_one.begin) && range_two.include?(range_one.end)
   end
-end
 
-test = CleanUp.new('test_input.txt')
-# test.part_one
+  # Receive 2 Ruby ranges, determine if any overlap occurs
+  def partially_overlaps?(range_one, range_two)
+    range_one.include?(range_two.begin) || range_one.include?(range_two.end) ||
+      range_two.include?(range_one.begin) || range_two.include?(range_one.end)
+  end
+end
 
 answer = CleanUp.new('input.txt')
 answer.part_one
+answer.part_two

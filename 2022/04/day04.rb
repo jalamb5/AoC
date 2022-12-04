@@ -8,19 +8,37 @@ class CleanUp
     @input = File.open(file).readlines
   end
 
+  def part_one
+    full_overlaps = 0
+    @input.each do |line|
+      ranges = range_creator(line)
+      full_overlaps += 1 if fully_overlaps?(ranges[0], ranges[1])
+    end
+    puts "Part One: #{full_overlaps}"
+  end
+
   private
 
+  # Receive a string of ranges, convert to Ruby range objects
   def range_creator(pair)
     ranges = []
     pairs = pair.split(',')
-    pairs.each do |pair|
-      values = pair.split('-')
+    pairs.each do |assignment|
+      values = assignment.split('-')
       ranges << Range.new(values[0].to_i, values[1].to_i)
     end
     ranges
   end
+
+  # Receive 2 Ruby ranges, determine if either is fully included in the other
+  def fully_overlaps?(range_one, range_two)
+    range_one.include?(range_two.begin) && range_one.include?(range_two.end) ||
+      range_two.include?(range_one.begin) && range_two.include?(range_one.end)
+  end
 end
 
-# a.include?(b.begin && b.end)
 test = CleanUp.new('test_input.txt')
-p test.range_creator('2-4,6-8000')
+# test.part_one
+
+answer = CleanUp.new('input.txt')
+answer.part_one

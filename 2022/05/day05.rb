@@ -19,6 +19,15 @@ class Stacks
     puts "Part One: #{top_items}"
   end
 
+  def part_two
+    move_crate_groups
+    top_items = String.new
+    @crate_stacks.each do |stack|
+      top_items << stack[0]
+    end
+    puts "Part Two: #{top_items}"
+  end
+
   private
 
   # Receive a string, generate normalized arrays for each line
@@ -36,6 +45,7 @@ class Stacks
   # Receive a normalized array and generate stacks
   def crate_stack_gen(lines)
     stacks = [[], [], [], [], [], [], [], [], []]
+    # stacks = [[], [], []]
     lines.each do |line|
       line.each_with_index do |value, index|
         stacks[index] << value.strip.gsub(/[\[\]]/, '') unless value.strip == ''
@@ -53,6 +63,7 @@ class Stacks
     normalized_instructions
   end
 
+  # Move crates one by one from stack to stack
   def move_crates
     @instructions.each do |number, from, to|
       number = number.to_i
@@ -65,11 +76,29 @@ class Stacks
       end
     end
   end
+
+  # Move crates in groups from stack to stack
+  def move_crate_groups
+    @instructions.each do |number, from, to|
+      crate = []
+      number = number.to_i
+      from_stack = @crate_stacks[from.to_i - 1]
+      to_stack = @crate_stacks[to.to_i - 1]
+      until number.zero?
+        crate << from_stack.shift
+        number -= 1
+      end
+      crate.reverse.each do |i|
+        to_stack.prepend(i)
+      end
+    end
+  end
 end
 
 # test = Stacks.new('test_input.txt')
 # test.part_one
+# test.part_two
 
 answer = Stacks.new('input.txt')
-answer.crate_stacks
-answer.part_one
+# answer.part_one
+answer.part_two

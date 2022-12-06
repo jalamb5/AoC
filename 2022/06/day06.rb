@@ -18,10 +18,22 @@ class CommsDevice
       n += 1
     end
   end
+
+  def part_two
+    i = 0
+    n = i + 14
+    until n == @input.length
+      return n if @input[i...n].split(//).uniq.length == 14
+
+      i += 1
+      n += 1
+    end
+  end
 end
 
 test = CommsDevice.new('test_input.txt')
 test.part_one
 
 answer = CommsDevice.new('input.txt')
-p answer.part_one
+answer.part_one
+p answer.part_two

@@ -16,7 +16,7 @@ class TermParser
     child_sizes
     full_sizes = {}
     @dirs.each do |directory|
-      full_sizes[directory.current_dir] = directory.size + directory.children_sizes.sum
+      full_sizes[directory.current_dir] = directory.size + directory.children_sizes.uniq.sum
     end
     full_sizes.each do |_k, v|
       answer += v if v <= 100_000
@@ -80,7 +80,7 @@ class TermParser
       parent_dir = directory.parent.nil? ? directory : directory.parent
       directory.children.each do |child|
         directory.children_sizes << child.size
-        until parent_dir.parent.nil?
+        until parent_dir.nil?
           parent_dir.children_sizes << child.size
           parent_dir = parent_dir.parent
         end
